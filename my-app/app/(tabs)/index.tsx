@@ -1,23 +1,53 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, ScrollView, View, type ViewProps } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useEffect, useState } from 'react';
+
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function HomeScreen() {
+
+  type RandomVerse = {
+    "random_verse": {
+      "book_id": string,
+      "book": string,
+      "chapter": number,
+      "verse": number,
+      "text": string,
+    }
+  }
+
+  const [ randVerse, setRandVerse ] = useState<RandomVerse>({"random_verse": {"book_id": "JHN", "book": "John", "chapter": 3, "verse": 16, "text": "For God so loved the world, that he gave his one and only Son, that whoever believes in him should not perish, but have eternal life."}});
+
+  async function getRandVerse() {
+    const response = await fetch('https://bible-api.com/data/web/random');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    setRandVerse(data);
+  }
+  
+  useEffect(() => {
+    getRandVerse();
+  }, []);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Hello World!</ThemedText>
-        <HelloWave />
+    <ScrollView style={styles.page}>
+      <View style={{...styles.titleContainer, marginVertical: 16}}>
+        <Image style={styles.logo} source={require('../../assets/images/logo-placeholder.png')} />
+        <ThemedText type="title">Mindful Verses</ThemedText>
+        {/* <HelloWave /> */}
+      </View>
+      <ThemedView style={styles.stepContainer}>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+          <ThemedText type='verseTitle'>{`${randVerse.random_verse.book} ${randVerse.random_verse.chapter}:${randVerse.random_verse.verse}`}</ThemedText>
+          <FontAwesome name="refresh" size={24} color="black" onPress={getRandVerse} />
+        </View>
+        <ThemedText>{randVerse.random_verse.text}</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
@@ -50,19 +80,31 @@ export default function HomeScreen() {
           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
       </ThemedView>
-    </ParallaxScrollView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  page: {
+    flex: 1,
+    marginHorizontal: 16,
+    marginTop: 32,
+  },
+  logo: {
+    height: 40,
+    width: 48,
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
   },
   stepContainer: {
     gap: 8,
     marginBottom: 8,
+    padding: 16,
+    borderRadius: 16,
   },
   reactLogo: {
     height: 178,
