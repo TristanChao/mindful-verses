@@ -7,6 +7,8 @@ import { ThemedView } from '@/components/ThemedView';
 import { useEffect, useState } from 'react';
 
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import VerseRefresh from '@/components/VerseRefresh';
 
 export default function HomeScreen() {
 
@@ -45,7 +47,8 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
           <ThemedText type='verseTitle'>{`${randVerse.random_verse.book} ${randVerse.random_verse.chapter}:${randVerse.random_verse.verse}`}</ThemedText>
-          <FontAwesome name="refresh" size={24} color="black" onPress={getRandVerse} />
+          {/* <FontAwesome name="refresh" size={24} color={useThemeColor({ light: '#000000', dark: "#ffffff" }, 'background')} onPress={getRandVerse} /> */}
+          <VerseRefresh onRefreshPress={getRandVerse} />
         </View>
         <ThemedText>{randVerse.random_verse.text}</ThemedText>
       </ThemedView>
