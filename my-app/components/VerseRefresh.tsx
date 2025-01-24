@@ -1,11 +1,17 @@
+import { useThemeColor } from '@/hooks/useThemeColor';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import React, { useRef } from 'react';
-import { Animated, View, TouchableWithoutFeedback, Image } from 'react-native';
+import { Animated, View, Image, Pressable, useColorScheme } from 'react-native';
 
 type VerseRefreshProps = {
   onRefreshPress: () => void;
 }
+
+// this is a button that will query for a random verse when clicked on
+// it also has a spinning animation
 const VerseRefresh = ({onRefreshPress}: VerseRefreshProps) => {
   const rotateValue = useRef(new Animated.Value(0)).current;
+  const colorScheme = useColorScheme();
 
   const startRotation = () => {
     Animated.timing(rotateValue, {
@@ -29,16 +35,26 @@ const VerseRefresh = ({onRefreshPress}: VerseRefreshProps) => {
 
   return (
     <View>
-      <TouchableWithoutFeedback onPress={onRefresh}>
-        <Animated.Image 
-          source={require('../assets/images/refresh-button.png')} 
-          style={{ 
-            width: 20, 
-            height: 20, 
-            transform: [{ rotate }]
-          }} 
-        />
-      </TouchableWithoutFeedback>
+      <Pressable onPress={onRefresh}>
+        {colorScheme === 'dark' ?
+          <Animated.Image 
+            source={require('../assets/images/refresh-button-white.png')} 
+            style={{ 
+              width: 15, 
+              height: 15, 
+              transform: [{ rotate }],
+            }} 
+          />
+          :
+          <Animated.Image 
+            source={require('../assets/images/refresh-button.png')} 
+            style={{ 
+              width: 15, 
+              height: 15, 
+              transform: [{ rotate }],
+            }} />
+          }
+      </Pressable>
     </View>
   );
 };

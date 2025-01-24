@@ -9,49 +9,24 @@ import { useEffect, useState } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import VerseRefresh from '@/components/VerseRefresh';
+import RandVerseBox from '@/components/ui/RandVerseBox';
+import VerseRetype from '@/components/ui/VerseRetype';
 
 export default function HomeScreen() {
 
-  type RandomVerse = {
-    "random_verse": {
-      "book_id": string,
-      "book": string,
-      "chapter": number,
-      "verse": number,
-      "text": string,
-    }
-  }
-
-  const [ randVerse, setRandVerse ] = useState<RandomVerse>({"random_verse": {"book_id": "JHN", "book": "John", "chapter": 3, "verse": 16, "text": "For God so loved the world, that he gave his one and only Son, that whoever believes in him should not perish, but have eternal life."}});
-
-  async function getRandVerse() {
-    const response = await fetch('https://bible-api.com/data/web/random');
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    setRandVerse(data);
-  }
-  
-  useEffect(() => {
-    getRandVerse();
-  }, []);
-
   return (
     <ScrollView style={styles.page}>
+      {/* title / logo */}
       <View style={{...styles.titleContainer, marginVertical: 16}}>
         <Image style={styles.logo} source={require('../../assets/images/logo-placeholder.png')} />
         <ThemedText type="title">Mindful Verses</ThemedText>
-        {/* <HelloWave /> */}
       </View>
-      <ThemedView style={styles.stepContainer}>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-          <ThemedText type='verseTitle'>{`${randVerse.random_verse.book} ${randVerse.random_verse.chapter}:${randVerse.random_verse.verse}`}</ThemedText>
-          {/* <FontAwesome name="refresh" size={24} color={useThemeColor({ light: '#000000', dark: "#ffffff" }, 'background')} onPress={getRandVerse} /> */}
-          <VerseRefresh onRefreshPress={getRandVerse} />
-        </View>
-        <ThemedText>{randVerse.random_verse.text}</ThemedText>
-      </ThemedView>
+
+      {/* random verse box */}
+      <RandVerseBox isHomeBox />
+
+      <VerseRetype />
+
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>

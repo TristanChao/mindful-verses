@@ -15,7 +15,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    Lexend: require('../assets/fonts/Lexend-VariableFont_wght.ttf'),
+    LexendRegular: require('../assets/fonts/Lexend_static/Lexend-Regular.ttf'),
     QuicksandRegular: require('../assets/fonts/Quicksand_static/Quicksand-Regular.ttf'),
     QuicksandSemibold: require('../assets/fonts/Quicksand_static/Quicksand-SemiBold.ttf'),
     QuicksandBold: require('../assets/fonts/Quicksand_static/Quicksand-Bold.ttf'),

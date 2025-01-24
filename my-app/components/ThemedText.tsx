@@ -46,18 +46,18 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   title: {
-    fontFamily: 'Lexend',
+    fontFamily: 'LexendRegular',
     fontSize: 24,
     lineHeight: 32,
   },
   subtitle: {
     fontSize: 20,
     // fontWeight: 'bold',
-    fontFamily: 'Lexend',
+    fontFamily: 'LexendRegular',
   },
   verseTitle: {
     fontSize: 20,
-    fontFamily: 'Lexend',
+    fontFamily: 'LexendRegular',
     color: '#2fadff',
   },
   link: {
